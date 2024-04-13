@@ -1,0 +1,22 @@
+{
+  "name": "fetchy",
+  "version": "1.0.0",
+  "description": "aplicacion de una sola pagina dinamica",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/APOgamer/Fetchy.git"
+  },
+  "author": "cuarteto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/APOgamer/Fetchy/issues"
+  },
+  "homepage": "https://github.com/APOgamer/Fetchy#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
