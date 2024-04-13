@@ -1,73 +1,144 @@
-import React, { useEffect, useState } from 'react'; // Importa la biblioteca React
-import { cargarDatos, guardarDatos, buscarConcepto } from '../../backend/controller.js';
+import React, { useState, useEffect } from "react";
 
 function App() {
-    const [conceptos, setConceptos] = useState([]);
-    const [nuevoNombre, setNuevoNombre] = useState('');
-    const [nuevaDescripcion, setNuevaDescripcion] = useState('');
-    const [nuevoEjemplo, setNuevoEjemplo] = useState('');
-    const [nuevasUrls, setNuevasUrls] = useState('');
-    const [busquedaNombre, setBusquedaNombre] = useState('');
-    const [resultadoBusqueda, setResultadoBusqueda] = useState(null);
+  const [busqueda, setBusqueda] = useState('');
+  const [resultado, setResultado] = useState(null);
+  const [nuevoConcepto, setNuevoConcepto] = useState({
+      nombre: '',
+      descripcion: '',
+      ejemplo: '',
+      urls: [],
+  });
 
-    useEffect(() => {
-        async function fetchData() {
-            const data = await cargarDatos();
-            setConceptos(data);
-        }
-        fetchData();
-    }, []);
+  useEffect(() => {
+      cargarDatos();
+  }, []);
 
-    const handleCrearConcepto = async () => {
-        await guardarDatos([
-            ...conceptos,
-            {
-                nombre: nuevoNombre,
-                descripcion: nuevaDescripcion,
-                ejemplo: nuevoEjemplo,
-                urls: nuevasUrls.split(',')
-            }
-        ]);
-        setConceptos(prevConceptos => [
-            ...prevConceptos,
-            {
-                nombre: nuevoNombre,
-                descripcion: nuevaDescripcion,
-                ejemplo: nuevoEjemplo,
-                urls: nuevasUrls.split(',')
-            }
-        ]);
-    };
+  const cargarDatos = () => {
+      const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
+      setResultado(conceptosGuardados);
+  };
 
-    const handleBuscarConcepto = () => {
-        const resultado = buscarConcepto(busquedaNombre, conceptos);
-        setResultadoBusqueda(resultado);
-    };
+  const buscarConcepto = (termino) => {
+    const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
+    const conceptoEncontrado = conceptosGuardados.find(concepto => concepto.nombre.toLowerCase() === termino.toLowerCase());
+    return conceptoEncontrado || { nombre: '', descripcion: '', ejemplo: '', urls: [] };
+  };
 
-    return (
-        <div>
-            <h1>Nuevo Concepto</h1>
-            <input type="text" placeholder="Nombre" value={nuevoNombre} onChange={(e) => setNuevoNombre(e.target.value)} />
-            <input type="text" placeholder="Descripción" value={nuevaDescripcion} onChange={(e) => setNuevaDescripcion(e.target.value)} />
-            <input type="text" placeholder="Ejemplo" value={nuevoEjemplo} onChange={(e) => setNuevoEjemplo(e.target.value)} />
-            <input type="text" placeholder="URLs (separadas por coma)" value={nuevasUrls} onChange={(e) => setNuevasUrls(e.target.value)} />
-            <button onClick={handleCrearConcepto}>Crear Concepto</button>
+  const crearConcepto = (nombre, descripcion, ejemplo, urls) => {
+      const nuevoConcepto = { nombre, descripcion, ejemplo, urls };
+      const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
+      conceptosGuardados.push(nuevoConcepto);
+      localStorage.setItem('conceptos', JSON.stringify(conceptosGuardados));
+  };
 
-            <h1>Buscar Concepto</h1>
-            <input type="text" placeholder="Nombre" value={busquedaNombre} onChange={(e) => setBusquedaNombre(e.target.value)} />
-            <button onClick={handleBuscarConcepto}>Buscar</button>
+  const handleChange = (event) => {
+      setBusqueda(event.target.value);
+  };
 
-            {resultadoBusqueda && (
-                <div>
-                    <h2>Resultado de la búsqueda:</h2>
-                    <p>Nombre: {resultadoBusqueda.nombre}</p>
-                    <p>Descripción: {resultadoBusqueda.descripcion}</p>
-                    <p>Ejemplo: {resultadoBusqueda.ejemplo}</p>
-                    <p>URLs: {resultadoBusqueda.urls.join(', ')}</p>
-                </div>
-            )}
-        </div>
-    );
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      const conceptoEncontrado = buscarConcepto(busqueda);
+      setResultado(conceptoEncontrado);
+  };
+
+  const handleNuevoConceptoChange = (event) => {
+      const { name, value } = event.target;
+      setNuevoConcepto({
+          ...nuevoConcepto,
+          [name]: value,
+      });
+  };
+
+  const handleAddUrl = () => {
+      setNuevoConcepto({
+          ...nuevoConcepto,
+          urls: [...nuevoConcepto.urls, ''],
+      });
+  };
+
+  const handleUrlChange = (index, value) => {
+      const urls = [...nuevoConcepto.urls];
+      urls[index] = value;
+      setNuevoConcepto({
+          ...nuevoConcepto,
+          urls,
+      });
+  };
+
+  const handleNuevoConceptoSubmit = (event) => {
+      event.preventDefault();
+      crearConcepto(nuevoConcepto.nombre, nuevoConcepto.descripcion, nuevoConcepto.ejemplo, nuevoConcepto.urls);
+      cargarDatos(); 
+      setNuevoConcepto({
+          nombre: '',
+          descripcion: '',
+          ejemplo: '',
+          urls: [],
+      });
+  };
+
+  return (
+      <div>
+          <h1>Buscar y Crear Conceptos</h1>
+          <div>
+              <h2>Buscar Concepto</h2>
+              <form onSubmit={handleSubmit}>
+                  <label>
+                      Buscar:
+                      <input type="text" value={busqueda} onChange={handleChange} />
+                  </label>
+                  <button type="submit">Buscar</button>
+              </form>
+              {resultado ? (
+                  <div>
+                      <h3>Resultado:</h3>
+                      <p>Nombre: {resultado.nombre}</p>
+                      <p>Descripción: {resultado.descripcion}</p>
+                      <p>Ejemplo: {resultado.ejemplo}</p>
+                      <p>URLs:</p>
+                      <ul>
+                      {resultado && resultado.urls && resultado.urls.map((url, index) => (
+    <li key={index}>{url}</li>
+))}
+
+                      </ul>
+                  </div>
+              ) : null}
+          </div>
+          <div>
+              <h2>Crear Concepto</h2>
+              <form onSubmit={handleNuevoConceptoSubmit}>
+                  <label>
+                      Nombre:
+                      <input type="text" name="nombre" value={nuevoConcepto.nombre} onChange={handleNuevoConceptoChange} />
+                  </label>
+                  <label>
+                      Descripción:
+                      <textarea name="descripcion" value={nuevoConcepto.descripcion} onChange={handleNuevoConceptoChange} />
+                  </label>
+                  <label>
+                      Ejemplo:
+                      <input type="text" name="ejemplo" value={nuevoConcepto.ejemplo} onChange={handleNuevoConceptoChange} />
+                  </label>
+                  <label>
+                      URLs:
+                      {nuevoConcepto.urls.map((url, index) => (
+                          <div key={index}>
+                              <input
+                                  type="text"
+                                  value={url}
+                                  onChange={(e) => handleUrlChange(index, e.target.value)}
+                              />
+                          </div>
+                      ))}
+                      <button type="button" onClick={handleAddUrl}>Agregar URL</button>
+                  </label>
+                  <button type="submit">Crear Concepto</button>
+              </form>
+          </div>
+      </div>
+  );
 }
 
 export default App;
