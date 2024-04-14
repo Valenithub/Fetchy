@@ -33,14 +33,15 @@ function App() {
         return resultados.map(resultado => resultado.item);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const conceptosCoincidentes = buscarConcepto(busqueda);
-        setConceptosCoincidentes(conceptosCoincidentes);
-    };
-
     const handleChange = (event) => {
-        setBusqueda(event.target.value);
+        const nuevoTermino = event.target.value;
+        setBusqueda(nuevoTermino);
+        if (nuevoTermino.length > 0) {
+            const conceptosCoincidentes = buscarConcepto(nuevoTermino);
+            setConceptosCoincidentes(conceptosCoincidentes);
+        } else {
+            setConceptosCoincidentes([]);
+        }
     };
 
     const handleConceptoSeleccionado = (concepto) => {
@@ -91,6 +92,18 @@ function App() {
         conceptosGuardados.push(nuevoConcepto);
         localStorage.setItem('conceptos', JSON.stringify(conceptosGuardados));
     };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const conceptosCoincidentes = buscarConcepto(busqueda);
+        if (conceptosCoincidentes.length > 0) {
+            const primerConceptoCoincidente = conceptosCoincidentes[0];
+            setConceptoSeleccionado(primerConceptoCoincidente);
+            setBusqueda('');
+            setConceptosCoincidentes([]);
+        }
+    };
+    
+    
 
     return (
         <div className="app">
