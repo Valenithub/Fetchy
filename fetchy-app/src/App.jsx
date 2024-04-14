@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Fuse from "fuse.js";
 import "./styles/app.css";
+import SearchBar from "./components/SearchBar";
+import ConceptList from "./components/ConceptList";
+import SelectedConcept from "./components/SelectedConcept";
+import CreateConceptForm from "./components/CreateConceptForm";
 
 function App() {
     const [busqueda, setBusqueda] = useState('');
@@ -25,9 +29,9 @@ function App() {
     const buscarConcepto = (termino) => {
         const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
         const fuse = new Fuse(conceptosGuardados, {
-            keys: ["nombre"], // especificamos la clave sobre la cual buscar
+            keys: ["nombre"],
             includeScore: true,
-            threshold: 0.3, // ajusta este valor según tus necesidades
+            threshold: 0.3,
         });
         const resultados = fuse.search(termino);
         return resultados.map(resultado => resultado.item);
@@ -38,7 +42,7 @@ function App() {
         setBusqueda(termino);
         const conceptosCoincidentes = buscarConcepto(termino);
         setResultado(conceptosCoincidentes);
-        setConceptoSeleccionado(null); // Restablecer el concepto seleccionado al cambiar la búsqueda
+        setConceptoSeleccionado(null);
     };
 
     const handleConceptoSeleccionado = (concepto) => {
@@ -107,71 +111,24 @@ function App() {
     return (
         <div className="app">
             <h1>Buscar y Crear Conceptos</h1>
-            <div>
-                <h2>Buscar Concepto</h2>
-                <input
-                    type="text"
-                    value={busqueda}
-                    onChange={handleChange}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Buscar..."
-                />
-                <button onClick={handleBuscar}>Buscar</button>
-                {resultado && resultado.length > 0 && (
-                    <ul>
-                        {resultado.map((concepto, index) => (
-                            <li key={index} className="concepto-coincidente" onClick={() => handleConceptoSeleccionado(concepto)}>
-                                {concepto.nombre}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                {conceptoSeleccionado && (
-                    <div>
-                        <h3>Concepto Seleccionado:</h3>
-                        <p>Nombre: {conceptoSeleccionado.nombre}</p>
-                        <p>Descripción: {conceptoSeleccionado.descripcion}</p>
-                        <p>Ejemplo: {conceptoSeleccionado.ejemplo}</p>
-                        <p>URLs:</p>
-                        <ul>
-                            {conceptoSeleccionado.urls.map((url, index) => (
-                                <li key={index}>{url}</li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-            </div>
-            <div>
-                <h2>Crear Concepto</h2>
-                <form onSubmit={handleNuevoConceptoSubmit}>
-                    <label>
-                        Nombre:
-                        <input type="text" name="nombre" value={nuevoConcepto.nombre} onChange={handleNuevoConceptoChange} />
-                    </label>
-                    <label>
-                        Descripción:
-                        <textarea name="descripcion" value={nuevoConcepto.descripcion} onChange={handleNuevoConceptoChange} />
-                    </label>
-                    <label>
-                        Ejemplo:
-                        <input type="text" name="ejemplo" value={nuevoConcepto.ejemplo} onChange={handleNuevoConceptoChange} />
-                    </label>
-                    <label>
-                        URLs:
-                        {nuevoConcepto.urls.map((url, index) => (
-                            <div key={index}>
-                                <input
-                                    type="text"
-                                    value={url}
-                                    onChange={(e) => handleUrlChange(index, e.target.value)}
-                                />
-                            </div>
-                        ))}
-                        <button type="button" onClick={handleAddUrl}>Agregar URL</button>
-                    </label>
-                    <button type="submit">Crear Concepto.</button>
-                </form>
-            </div>
+            <SearchBar
+                busqueda={busqueda}
+                handleChange={handleChange}
+                handleBuscar={handleBuscar}
+                handleKeyPress={handleKeyPress}
+            />
+            <ConceptList
+                resultado={resultado}
+                handleConceptoSeleccionado={handleConceptoSeleccionado}
+            />
+            <SelectedConcept conceptoSeleccionado={conceptoSeleccionado} />
+            <CreateConceptForm
+                nuevoConcepto={nuevoConcepto}
+                handleNuevoConceptoChange={handleNuevoConceptoChange}
+                handleAddUrl={handleAddUrl}
+                handleUrlChange={handleUrlChange}
+                handleNuevoConceptoSubmit={handleNuevoConceptoSubmit}
+            />
         </div>
     );
 }
