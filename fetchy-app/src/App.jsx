@@ -134,7 +134,7 @@ function App() {
                       ))}
                       <button type="button" onClick={handleAddUrl}>Agregar URL</button>
                   </label>
-                  <button type="submit">Crear Concepto</button>
+                  <button type="submit">Crear Concepto.</button>
               </form>
           </div>
       </div>
