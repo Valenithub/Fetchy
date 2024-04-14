@@ -27,16 +27,17 @@ function App() {
     return conceptoEncontrado || { nombre: '', descripcion: '', ejemplo: '', urls: [] };
   };
 
-  const crearConcepto = (nombre, descripcion, ejemplo, urls) => {
-      const nuevoConcepto = { nombre, descripcion, ejemplo, urls };
-      const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
-      conceptosGuardados.push(nuevoConcepto);
-      localStorage.setItem('conceptos', JSON.stringify(conceptosGuardados));
-  };
+    const handleChange = (event) => {
+        const nuevoTermino = event.target.value;
+        setBusqueda(nuevoTermino);
+        if (nuevoTermino.length > 0) {
+            const conceptosCoincidentes = buscarConcepto(nuevoTermino);
+            setConceptosCoincidentes(conceptosCoincidentes);
+        } else {
+            setConceptosCoincidentes([]);
+        }
+    };
 
-  const handleChange = (event) => {
-      setBusqueda(event.target.value);
-  };
 
   const handleSubmit = (event) => {
       event.preventDefault();
@@ -80,29 +81,26 @@ function App() {
       });
   };
 
-  return (
-      <div>
-          <h1>Buscar y Crear Conceptos</h1>
-          <div>
-              <h2>Buscar Concepto</h2>
-              <form onSubmit={handleSubmit}>
-                  <label>
-                      Buscar:
-                      <input type="text" value={busqueda} onChange={handleChange} />
-                  </label>
-                  <button type="submit">Buscar</button>
-              </form>
-              {resultado ? (
-                  <div>
-                      <h3>Resultado:</h3>
-                      <p>Nombre: {resultado.nombre}</p>
-                      <p>Descripción: {resultado.descripcion}</p>
-                      <p>Ejemplo: {resultado.ejemplo}</p>
-                      <p>URLs:</p>
-                      <ul>
-                      {resultado && resultado.urls && resultado.urls.map((url, index) => (
-    <li key={index}>{url}</li>
-))}
+
+    const crearConcepto = (nombre, descripcion, ejemplo, urls) => {
+        const nuevoConcepto = { nombre, descripcion, ejemplo, urls };
+        const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
+        conceptosGuardados.push(nuevoConcepto);
+        localStorage.setItem('conceptos', JSON.stringify(conceptosGuardados));
+    };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const conceptosCoincidentes = buscarConcepto(busqueda);
+        if (conceptosCoincidentes.length > 0) {
+            const primerConceptoCoincidente = conceptosCoincidentes[0];
+            setConceptoSeleccionado(primerConceptoCoincidente);
+            setBusqueda('');
+            setConceptosCoincidentes([]);
+        }
+    };
+    
+    
+
 
                       </ul>
                   </div>
