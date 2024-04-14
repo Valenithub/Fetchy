@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../styles/app.css";
 
-const SelectedConcept = ({ conceptoSeleccionado }) => {
+export const SelectedConcept = ({ conceptoSeleccionado }) => {
     return (
         <div>
             {conceptoSeleccionado && (
@@ -27,4 +26,3 @@ SelectedConcept.propTypes = {
     conceptoSeleccionado: PropTypes.object,
 };
 
-export default SelectedConcept;
