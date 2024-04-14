@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Fuse from "fuse.js";
 import "./styles/app.css";
 import { ConceptList } from "./components/ConceptList/ConceptList";
@@ -107,7 +107,8 @@ export const App = () => {
         nuevoConcepto.nombre,
         nuevoConcepto.descripcion,
         nuevoConcepto.ejemplo,
-        nuevoConcepto.urls
+        nuevoConcepto.urls,
+        setError("")
       );
       cargarDatos();
       setNuevoConcepto({

@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 
 export const CreateConceptForm = ({
@@ -23,7 +22,7 @@ export const CreateConceptForm = ({
           <input
             type="text"
             placeholder="nombre"
-            class="input"
+            className="input"
             name="nombre"
             value={nuevoConcepto.nombre}
             onChange={handleNuevoConceptoChange}
@@ -32,7 +31,7 @@ export const CreateConceptForm = ({
           <textarea
             type="text"
             placeholder="descripcion"
-            class="input"
+            className="input"
             name="descripcion"
             value={nuevoConcepto.descripcion}
             onChange={handleNuevoConceptoChange}
@@ -41,7 +40,7 @@ export const CreateConceptForm = ({
           <textarea
             type="text"
             placeholder="ejemplo"
-            class="input"
+            className="input"
             name="ejemplo"
             value={nuevoConcepto.ejemplo}
             onChange={handleNuevoConceptoChange}
@@ -79,4 +78,7 @@ CreateConceptForm.propTypes = {
   handleAddUrl: PropTypes.func.isRequired,
   handleUrlChange: PropTypes.func.isRequired,
   handleNuevoConceptoSubmit: PropTypes.func.isRequired,
+  mostrarAñadir: PropTypes.bool, 
+  error: PropTypes.string
 };
+

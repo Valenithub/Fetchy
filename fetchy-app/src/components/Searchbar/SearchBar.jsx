@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import "./Searchbar.css";
 export const SearchBar = ({
@@ -6,40 +5,43 @@ export const SearchBar = ({
   busqueda,
   handleChange,
   handleBuscar,
+  /* eslint-disable no-unused-vars */
   handleKeyPress,
-  setMostrarAñadir
+  /* eslint-enable no-unused-vars */
+  setMostrarAñadir,
 }) => {
   return (
    <div style={{height:"200px",display:"flex",alignItems:"center",}}>
      {
       !mostrarAñadir && (<div style={{display:"flex",alignItems:"center"}}>
-      <form class="form">
-    <label for="search">
+      <form className="form">
+    <label htmlFor="search">
       <input
       value={busqueda}
       onChange={handleChange}
         required=""
-        autocomplete="off"
+        autoComplete="off"
         placeholder="search your chats"
         id="search"
         type="text"
       />
-      <button type="reset" class="close-btn" onClick={handleBuscar}>
+      <button type="reset" className="close-btn" onClick={handleBuscar}>
         <svg
           viewBox="0 0 20 20"
-          class="h-5 w-5"
+          className="h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            clip-rule="evenodd"
-            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-            fill-rule="evenodd"
+            fillRule="evenodd"
+            d="M8.5 15a6.5 6.5 0 111.48-1.48l5.347
+             5.346a1 1 0 11-1.415 1.415l-5.347-5.346A6.472
+              6.472 0 018.5 15zm0-11.5a5 5 0 100 10 5 5 0 000-10z"
           ></path>
         </svg>
       </button>
     </label>
   </form>
-  <button className="button" onClick={()=> setMostrarAñadir(true)}>añdir </button>
+  <button className="button" onClick={()=> setMostrarAñadir(true)}>añadir </button>
   </div>)
      }
    </div>
@@ -48,8 +50,11 @@ export const SearchBar = ({
 };
 
 SearchBar.propTypes = {
-  busqueda: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleBuscar: PropTypes.func.isRequired,
-  handleKeyPress: PropTypes.func.isRequired,
-};
+    mostrarAñadir: PropTypes.bool.isRequired,
+    busqueda: PropTypes.string.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleBuscar: PropTypes.func.isRequired,
+    handleKeyPress: PropTypes.func.isRequired,
+    setMostrarAñadir: PropTypes.func.isRequired,
+  };
+  

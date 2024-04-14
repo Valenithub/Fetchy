@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 export const ConceptList = ({mostrarAñadir, resultado, handleConceptoSeleccionado }) => {
     return (
@@ -21,6 +20,8 @@ export const ConceptList = ({mostrarAñadir, resultado, handleConceptoSelecciona
 };
 
 ConceptList.propTypes = {
+    mostrarAñadir: PropTypes.bool.isRequired,
     resultado: PropTypes.array.isRequired,
     handleConceptoSeleccionado: PropTypes.func.isRequired,
 };
+
