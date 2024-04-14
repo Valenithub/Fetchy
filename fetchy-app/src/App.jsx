@@ -110,7 +110,7 @@ export const App = () => {
             <input  className="input-buscar" type="text" value={busqueda} onChange={handleChange} />
           <button type="submit">Buscar</button>
         </form>
-        {resultado  && false? (
+        {resultado ? (
           <div>
             <h3>Resultado:</h3>
             <p>Nombre: {resultado.nombre}</p>
