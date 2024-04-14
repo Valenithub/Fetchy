@@ -123,6 +123,12 @@ export const App = () => {
   const handleBack = (event) => {
     event.preventDefault();
       //cargarDatos();
+      setNuevoConcepto({
+        nombre: "",
+        descripcion: "",
+        ejemplo: "",
+        urls: [],
+      });
       setMostrarAñadir(false);
   }
   const crearConcepto = (nombre, descripcion, ejemplo, urls) => {
