@@ -46,7 +46,7 @@ export const CreateConceptForm = ({
             onChange={handleNuevoConceptoChange}
           />
 
-          <label>
+          <label className="createbuttonsBox">
             {nuevoConcepto.urls.map((url, index) => (
               <div  key={index}>
                 <input
@@ -56,11 +56,11 @@ export const CreateConceptForm = ({
                 />
               </div>
             ))}
-            <button className="button" type="button" onClick={handleAddUrl}>
-              Agregar URL
-            </button>
-          </label>
+          <button className="button" type="button" onClick={handleAddUrl}>
+            Agregar URL
+          </button>
           <button  className="button" type="submit">Crear Concepto.</button>
+          </label>
         </form>
       )}
     </div>

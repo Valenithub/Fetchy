@@ -71,7 +71,7 @@ export const App = () => {
     const { name, value } = event.target;
     setNuevoConcepto({
       ...nuevoConcepto,
-      [name]: value,
+      [name]: value.trim(),
     });
   };
   const handleAddUrl = () => {
