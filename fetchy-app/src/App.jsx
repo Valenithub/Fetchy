@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import "./styles/app.css"
+
+
+
 
 function App() {
   const [busqueda, setBusqueda] = useState('');
@@ -79,7 +83,7 @@ function App() {
   };
 
   return (
-      <div>
+      <div className="app">
           <h1>Buscar y Crear Conceptos</h1>
           <div>
               <h2>Buscar Concepto</h2>
