@@ -4,7 +4,8 @@ import "./styles/app.css";
 
 function App() {
     const [busqueda, setBusqueda] = useState('');
-    const [resultado, setResultado] = useState([]);
+    const [conceptosCoincidentes, setConceptosCoincidentes] = useState([]);
+    const [conceptoSeleccionado, setConceptoSeleccionado] = useState(null);
     const [nuevoConcepto, setNuevoConcepto] = useState({
         nombre: '',
         descripcion: '',
@@ -18,7 +19,7 @@ function App() {
 
     const cargarDatos = () => {
         const conceptosGuardados = JSON.parse(localStorage.getItem('conceptos')) || [];
-        setResultado(conceptosGuardados);
+        setConceptosCoincidentes(conceptosGuardados);
     };
 
     const buscarConcepto = (termino) => {
@@ -32,10 +33,20 @@ function App() {
         return resultados.map(resultado => resultado.item);
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const conceptosCoincidentes = buscarConcepto(busqueda);
+        setConceptosCoincidentes(conceptosCoincidentes);
+    };
+
     const handleChange = (event) => {
         setBusqueda(event.target.value);
-        const conceptosCoincidentes = buscarConcepto(event.target.value);
-        setResultado(conceptosCoincidentes);
+    };
+
+    const handleConceptoSeleccionado = (concepto) => {
+        setConceptoSeleccionado(concepto);
+        setBusqueda('');
+        setConceptosCoincidentes([]);
     };
 
     const handleNuevoConceptoChange = (event) => {
@@ -86,32 +97,38 @@ function App() {
             <h1>Buscar y Crear Conceptos</h1>
             <div>
                 <h2>Buscar Concepto</h2>
-                <form onSubmit={(e) => e.preventDefault()}>
+                <form onSubmit={handleSubmit}>
                     <label>
                         Buscar:
                         <input type="text" value={busqueda} onChange={handleChange} />
                     </label>
-                    <button type="submit">Buscar</button>
+                    <button type="submit" disabled={!busqueda}>Buscar</button>
                 </form>
-                {resultado && resultado.length > 0 ? (
+                {conceptosCoincidentes.length > 0 && (
                     <div>
                         <h3>Resultados:</h3>
-                        {resultado.map((concepto, index) => (
-                            <div key={index}>
-                                <p>Nombre: {concepto.nombre}</p>
-                                <p>Descripción: {concepto.descripcion}</p>
-                                <p>Ejemplo: {concepto.ejemplo}</p>
-                                <p>URLs:</p>
-                                <ul>
-                                    {concepto.urls.map((url, urlIndex) => (
-                                        <li key={urlIndex}>{url}</li>
-                                    ))}
-                                </ul>
+                        {conceptosCoincidentes.map((concepto, index) => (
+                            <div key={index} className="concepto-coincidente" onClick={() => handleConceptoSeleccionado(concepto)}>
+                                <p>{concepto.nombre}</p>
                             </div>
                         ))}
                     </div>
-                ) : null}
+                )}
             </div>
+            {conceptoSeleccionado && (
+                <div>
+                    <h2>Concepto Seleccionado:</h2>
+                    <p>Nombre: {conceptoSeleccionado.nombre}</p>
+                    <p>Descripción: {conceptoSeleccionado.descripcion}</p>
+                    <p>Ejemplo: {conceptoSeleccionado.ejemplo}</p>
+                    <p>URLs:</p>
+                    <ul>
+                        {conceptoSeleccionado.urls.map((url, index) => (
+                            <li key={index}>{url}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
             <div>
                 <h2>Crear Concepto</h2>
                 <form onSubmit={handleNuevoConceptoSubmit}>
