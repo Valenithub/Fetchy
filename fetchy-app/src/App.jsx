@@ -120,7 +120,11 @@ export const App = () => {
       setMostrarAñadir(false);
     }
   };
-
+  const handleBack = (event) => {
+    event.preventDefault();
+      //cargarDatos();
+      setMostrarAñadir(false);
+  }
   const crearConcepto = (nombre, descripcion, ejemplo, urls) => {
     // GENERRA UN ID ALEATOREO
     const nuevoId = uuidv4();
@@ -173,6 +177,7 @@ export const App = () => {
         handleAddUrl={handleAddUrl}
         handleUrlChange={handleUrlChange}
         handleNuevoConceptoSubmit={handleNuevoConceptoSubmit}
+        handleBack={handleBack}
       />
     </div>
   );

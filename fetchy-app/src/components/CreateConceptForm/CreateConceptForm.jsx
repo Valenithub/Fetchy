@@ -7,6 +7,7 @@ export const CreateConceptForm = ({
   handleUrlChange,
   handleNuevoConceptoSubmit,
   mostrarAñadir,
+  handleBack,
   error
 
 }) => {
@@ -17,6 +18,7 @@ export const CreateConceptForm = ({
         <form
           className="form-añadir-concepto"
           onSubmit={handleNuevoConceptoSubmit}
+          
         >
 
           <input
@@ -59,7 +61,9 @@ export const CreateConceptForm = ({
           <button className="button" type="button" onClick={handleAddUrl}>
             Agregar URL
           </button>
-          <button  className="button" type="submit">Crear Concepto.</button>
+          <button  className="button">Crear Concepto.</button>
+          <button className="button" onClick={handleBack}>Regresar</button>
+
           </label>
         </form>
       )}
@@ -79,6 +83,7 @@ CreateConceptForm.propTypes = {
   handleUrlChange: PropTypes.func.isRequired,
   handleNuevoConceptoSubmit: PropTypes.func.isRequired,
   mostrarAñadir: PropTypes.bool, 
-  error: PropTypes.string
+  error: PropTypes.string,
+  handleBack: PropTypes.func.isRequired,
 };
 
