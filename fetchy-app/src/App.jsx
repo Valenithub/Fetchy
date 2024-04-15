@@ -173,7 +173,7 @@ export const App = () => {
       />
       <SelectedConcept
         setCrud={setCrud}
-        conceptoSeleccionado={conceptoSeleccionado}
+        conceptoSeleccionado={resultado.length!=0?null:conceptoSeleccionado}//si el resultado es diferente a 0 te de un null
       />
       <CreateConceptForm
       error={error}
