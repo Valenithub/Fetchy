@@ -8,12 +8,13 @@
     --rotate: 80deg;
     --gap: 2em;
     --icon-change-color: #15A986;
-    --height: 37px;
-    width: 350px;
+    --height: 48px;
+    width: 370px;
     padding-inline-end: 1em;
     background: var(--input-bg);
     position: relative;
     border-radius: 10px;
+    margin-top: 15px;
   }
   
   .form label {
@@ -120,8 +121,9 @@
     cursor: pointer;
     background-color: #7d2ae8;
     transition: all 0.2s ease;
-    margin-left: 10PX;
-    margin-top: 10px;
+    margin-left: 10px;
+    margin-top: 16px;
+    font-size: 20px;
   }
   
   .button:active {

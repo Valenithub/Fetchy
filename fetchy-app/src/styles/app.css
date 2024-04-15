@@ -25,6 +25,24 @@ body{
     flex-direction: column;
 }
 
+h3 {
+  background: #171F89;
+  border-radius: 8px;
+  height: auto;
+  width: auto;
+  text-align: center;
+  font-size: 30px;
+  margin-top: -40px;
+  
+}
+p{
+  font-size: 20px;
+  margin-top: 20px;
+  text-align: center;
+  background: #333;
+  border-radius: 8px;
+  box-shadow: yellow;
+}
 /*from añadir*/
 
 .contenedor-añadir-concepto{
